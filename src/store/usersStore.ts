@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { usersData } from '../utils/usersData';
 import type { User } from '../types/user';
+import { persist } from 'zustand/middleware';
 
 type UsersStore = {
   users: User[];
@@ -9,8 +10,9 @@ type UsersStore = {
   deleteUser: (id: string) => void;
 }
 
-const useUsersStore = create<UsersStore>((set, get) => {
-  return {
+const useUsersStore = create<UsersStore>()(
+  persist((set, get) => {
+    return {
     users: usersData,
     addUser: (user) => {
       set({
@@ -19,7 +21,10 @@ const useUsersStore = create<UsersStore>((set, get) => {
     },
     updateUser: () => { },
     deleteUser: () => { },
+  }}, {
+    name: "users"
   }
-})
+  )
+)
 
 export default useUsersStore;

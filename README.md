@@ -1,73 +1,39 @@
-# React + TypeScript + Vite
+# User Management App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a basic user management project built using React and TypeScript. The main goal of this project was to learn and practice state management with Zustand.
 
-Currently, two official plugins are available:
+Along the way, I also explored React Hook Form for handling form inputs, Zod for form validation, and Bootstrap for styling and layout.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The app displays a list of users, allows adding new ones, and provides a clean and responsive user interface.
 
-## React Compiler
+It helped me understand how to manage state efficiently, handle form validation in a type-safe way, and structure components neatly in a small project.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tools and Libraries Used
 
-## Expanding the ESLint configuration
+- React with TypeScript for building components
+- Zustand for global state management
+- React Hook Form for form control
+- Zod for schema validation
+- React Bootstrap for styling
+- Lucide React for icons
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## What I Learned
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+While building this project, I learned:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- How to manage global state in React using Zustand
+- How to handle forms effectively with React Hook Form
+- How to integrate Zod for validation with TypeScript types
+- How to use Bootstrap to make a responsive and clean UI
+- How to structure a simple React project for better readability and scalability
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Future Improvements
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+In future iterations, I plan to:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- Add a JSON server to persist user data
+- Add modal forms for adding and editing users
+- Improve validation and user feedback
+- Possibly integrate Zustand middleware for async operations
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+This project served as a great hands-on exercise for understanding Zustand and improving my overall React and TypeScript skills.
