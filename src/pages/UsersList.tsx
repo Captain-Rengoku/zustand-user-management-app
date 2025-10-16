@@ -9,15 +9,44 @@ import {
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import useUsersStore from "../store/usersStore";
 import { useNavigate } from "react-router-dom";
+import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
+import { useState } from "react";
+import type { User } from "../types/user";
+import { toast } from "react-toastify";
 
 const UsersList = () => {
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [userToDelete, setUserToDelete] = useState<User | null>(null);
   const users = useUsersStore((state) => state.users);
   const navigate = useNavigate();
+
+  const deleteUser = useUsersStore((state) => state.deleteUser);
+
+  const handleDeleteClick = (user: User) => {
+    setUserToDelete(user);
+    setShowDeleteModal(true);
+  };
+  const handleDeleteCancel = () => {
+    setUserToDelete(null);
+    setShowDeleteModal(false);
+  };
+  const handleDeleteConfirm = () => {
+    if (userToDelete) {
+      deleteUser(userToDelete.id);
+      setUserToDelete(null);
+      setShowDeleteModal(false);
+      toast('User is deleted successfully');
+    }
+  };
   return (
     <Container className="py-4">
       <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
         <h2 className="text-primary mb-0">User Management</h2>
-        <Button className="d-flex p-2 align-items-center gap-1" size="sm" onClick={() => navigate("/add")}>
+        <Button
+          className="d-flex p-2 align-items-center gap-1"
+          size="sm"
+          onClick={() => navigate("/add")}
+        >
           <Plus size={18} />
           <span className="d-none d-sm-inline">Add New User</span>
           <span className="d-sm-none">Add</span>
@@ -46,7 +75,11 @@ const UsersList = () => {
                         <Button variant="outline-primary" size="sm">
                           <Edit2 size={14} />
                         </Button>
-                        <Button variant="outline-danger" size="sm">
+                        <Button
+                          variant="outline-danger"
+                          size="sm"
+                          onClick={() => handleDeleteClick(user)}
+                        >
                           <Trash2 size={14} />
                         </Button>
                       </div>
@@ -89,6 +122,12 @@ const UsersList = () => {
           })}
         </Row>
       )}
+      <DeleteConfirmationModal
+        show={showDeleteModal}
+        user={userToDelete}
+        onConfirm={handleDeleteConfirm}
+        onHide={handleDeleteCancel}
+      />
     </Container>
   );
 };

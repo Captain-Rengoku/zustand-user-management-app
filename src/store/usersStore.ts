@@ -6,22 +6,30 @@ import { persist } from 'zustand/middleware';
 type UsersStore = {
   users: User[];
   addUser: (user: User) => void;
-  updateUser: (id: string) => void;
   deleteUser: (id: string) => void;
+  updateUser: (id: string) => void;
 }
 
 const useUsersStore = create<UsersStore>()(
   persist((set, get) => {
     return {
-    users: usersData,
-    addUser: (user) => {
-      set({
-        users: [user, ...get().users],
-      })
-    },
-    updateUser: () => { },
-    deleteUser: () => { },
-  }}, {
+      users: usersData,
+
+      addUser: (user) => {
+        set({
+          users: [user, ...get().users],
+        })
+      },
+
+      deleteUser: (id) => {
+        set({
+          users: get().users.filter(user => user.id !== id)
+        })
+      },
+
+      updateUser: () => { },
+    }
+  }, {
     name: "users"
   }
   )
