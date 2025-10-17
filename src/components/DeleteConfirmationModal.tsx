@@ -1,17 +1,16 @@
 import type React from "react";
 import { Button, Modal } from "react-bootstrap";
-import type { User } from "../types/user";
 
 type DeleteConfirmationModalProps = {
   show: boolean;
-  user: User | null;
+  userName: string;
   onHide: () => void;
   onConfirm: () => void;
 };
 
 const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
   show,
-  user,
+  userName,
   onHide,
   onConfirm,
 }) => {
@@ -21,7 +20,7 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
         <Modal.Title>Confirm Delete</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>Are you sure you want to delete the user <strong>{user?.name}</strong>,</p>
+        <p>Are you sure you want to delete the user <strong>{userName}</strong>,</p>
         <p className="text-danger small">This action cannot be undone!</p>
       </Modal.Body>
       <Modal.Footer>

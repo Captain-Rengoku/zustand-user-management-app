@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
 import { useState } from "react";
 import type { User } from "../types/user";
-import { toast } from "react-toastify";
+import { Slide, toast } from "react-toastify";
 
 const UsersList = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -35,7 +35,18 @@ const UsersList = () => {
       deleteUser(userToDelete.id);
       setUserToDelete(null);
       setShowDeleteModal(false);
-      toast('User is deleted successfully');
+      // toast("User is deleted successfully");
+      toast.success("User is deleted successfully", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Slide,
+      });
     }
   };
   return (
@@ -124,7 +135,7 @@ const UsersList = () => {
       )}
       <DeleteConfirmationModal
         show={showDeleteModal}
-        user={userToDelete}
+        userName={userToDelete?.name || ""}
         onConfirm={handleDeleteConfirm}
         onHide={handleDeleteCancel}
       />
