@@ -83,7 +83,9 @@ const UsersList = () => {
                         {user.name}
                       </h6>
                       <div className="d-flex gap-2">
-                        <Button variant="outline-primary" size="sm">
+                        <Button variant="outline-primary" size="sm"
+                        onClick={() => navigate(`/edit/${user.id}`)}
+                        >
                           <Edit2 size={14} />
                         </Button>
                         <Button

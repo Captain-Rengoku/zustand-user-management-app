@@ -1,9 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { z } from "zod";
 import useUsersStore from "../store/usersStore";
+import { Slide, toast } from "react-toastify";
 
 const userSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -27,41 +28,81 @@ type UserFormProps = {
 };
 
 const UserForm: React.FC<UserFormProps> = ({ isEdit = false }) => {
+  const navigate = useNavigate();
+  const addUser = useUsersStore((state) => state.addUser);
+  const { id } = useParams();
+  const getUserByID = useUsersStore((state) => state.getUserByID);
+  const existingUser = id ? getUserByID(id) : null;
+  const updateUser = useUsersStore((state) => state.updateUser);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<UserFormData>({
     resolver: zodResolver(userSchema),
+    defaultValues: existingUser
+      ? {
+          name: existingUser?.name,
+          phone: existingUser?.phone,
+          email: existingUser?.email,
+          city: existingUser?.location.city,
+          state: existingUser?.location.state,
+          streetName: existingUser?.location.street.name,
+          streetNumber: "" + existingUser?.location.street.number || "",
+        }
+      : undefined,
   });
 
-  const navigate = useNavigate();
-
-  const addUser = useUsersStore((state) => state.addUser);
-  const updateUser = useUsersStore((state) => state.updateUser);
-
   const onSubmit = (data: UserFormData) => {
-    if (!isEdit) {
-      const user = {
-        id: crypto.randomUUID(),
-        name: data.name,
-        location: {
-          city: data.city,
-          state: data.state,
-          street: {
-            // number: data.streetNumber,
-            // converting the number to the user number type
-            ...(data.streetNumber && { number: parseInt(data.streetNumber, 10) }),
-            name: data.streetName,
-          },
+    const user = {
+      id: crypto.randomUUID(),
+      name: data.name,
+      location: {
+        city: data.city,
+        state: data.state,
+        street: {
+          // number: data.streetNumber,
+          // converting the number to the user number type
+          ...(data.streetNumber && {
+            number: parseInt(data.streetNumber, 10),
+          }),
+          name: data.streetName,
         },
-        email: data.email,
-        phone: data.phone,
-      };
+      },
+      email: data.email,
+      phone: data.phone,
+    };
+    if (!isEdit) {
       addUser(user);
       navigate("/");
+      toast.success(`User ${user.name} is added successfully.`, {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Slide,
+      })
     } else {
-      updateUser(data.email);
+      if (id) {
+        updateUser(id, user);
+        navigate("/")
+        toast.success(`User ${user.name} is updated successfully.`, {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Slide,
+      })
+      }
     }
   };
 
@@ -73,7 +114,7 @@ const UserForm: React.FC<UserFormProps> = ({ isEdit = false }) => {
         <Col lg={8}>
           <Card className="shadow">
             <Card.Header className="bg-primary text-white">
-              <h3 className="mb-0">{isEdit ? "Edit User" : "Add New User"}</h3>
+              <h3 className="mb-0">{isEdit ? "Update User" : "Add New User"}</h3>
             </Card.Header>
             <Card.Body className="bg-body-secondary">
               <Form onSubmit={handleSubmit(onSubmit)}>

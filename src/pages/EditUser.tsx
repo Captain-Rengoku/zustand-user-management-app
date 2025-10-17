@@ -3,7 +3,7 @@ import UserForm from '../components/UserForm'
 const EditUser = () => {
   return (
     <div>
-      <UserForm/>
+      <UserForm isEdit={true}/>
     </div>
   )
 }

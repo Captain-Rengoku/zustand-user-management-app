@@ -7,7 +7,8 @@ type UsersStore = {
   users: User[];
   addUser: (user: User) => void;
   deleteUser: (id: string) => void;
-  updateUser: (id: string) => void;
+  getUserByID: (id: string) => User | undefined;
+  updateUser: (id: string, updatedUser: User) => void;
 }
 
 const useUsersStore = create<UsersStore>()(
@@ -27,7 +28,23 @@ const useUsersStore = create<UsersStore>()(
         })
       },
 
-      updateUser: () => { },
+      getUserByID: (id) => {
+        return get().users.find((user) => user.id === id);
+      },
+
+      updateUser: (id, updatedUser) => {
+        set({
+          users: get().users.map(user => {
+            if(user.id === id){
+              return {
+                ...user,
+                ...updatedUser
+              };
+            }
+            return user;
+          }) 
+        })
+      },
     }
   }, {
     name: "users"
