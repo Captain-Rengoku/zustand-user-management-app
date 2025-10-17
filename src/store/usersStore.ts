@@ -38,7 +38,8 @@ const useUsersStore = create<UsersStore>()(
             if(user.id === id){
               return {
                 ...user,
-                ...updatedUser
+                ...updatedUser,
+                id,
               };
             }
             return user;

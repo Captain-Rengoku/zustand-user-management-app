@@ -3,3 +3,16 @@
   font-size: 0.8rem;
   margin-top: 0.25rem;
 }
+
+.shadow-hover {
+  transition : box-shadow 0.2s;
+}
+
+.shadow-hover:hover {
+  box-shadow: var(--bs-box-shadow-lg) !important;
+}
+
+.highlight-shadow {
+  box-shadow: 0 0 0 4px #0d6efd33, 0 4px 24px 0 #0d6efd66 !important;
+  transition: box-shadow 0.4s;
+}

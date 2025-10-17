@@ -20,7 +20,7 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
         <Modal.Title>Confirm Delete</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>Are you sure you want to delete the user <strong>{userName}</strong>,</p>
+        <p>Are you sure you want to delete the user <strong>{userName}</strong> ?</p>
         <p className="text-danger small">This action cannot be undone!</p>
       </Modal.Body>
       <Modal.Footer>

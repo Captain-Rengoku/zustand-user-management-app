@@ -90,7 +90,11 @@ const UserForm: React.FC<UserFormProps> = ({ isEdit = false }) => {
     } else {
       if (id) {
         updateUser(id, user);
-        navigate("/")
+        navigate("/", {
+          state: {
+            highlightedUserId: id
+          }
+        })
         toast.success(`User ${user.name} is updated successfully.`, {
         position: "bottom-right",
         autoClose: 2000,
@@ -106,7 +110,7 @@ const UserForm: React.FC<UserFormProps> = ({ isEdit = false }) => {
     }
   };
 
-  console.log("errors", errors);
+  // console.log("errors", errors);
 
   return (
     <Container className="py-4">

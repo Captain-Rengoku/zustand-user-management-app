@@ -8,9 +8,9 @@ import {
 } from "lucide-react";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import useUsersStore from "../store/usersStore";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { User } from "../types/user";
 import { Slide, toast } from "react-toastify";
 
@@ -19,6 +19,24 @@ const UsersList = () => {
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
   const users = useUsersStore((state) => state.users);
   const navigate = useNavigate();
+  const { state } = useLocation();
+  // console.log("state", state);
+  const [highlightedId, setHighlightedId] = useState<string | undefined>(
+    undefined
+  );
+
+  useEffect(() => {
+    let timeout = 0;
+    if (state?.highlightedUserId) {
+      setHighlightedId(state.highlightedUserId);
+      timeout = setTimeout(() => {
+        setHighlightedId(undefined);
+        // Use navigate to clear the state and delay navigation until after render
+        navigate(".", { replace: true });
+      }, 2500);
+    }
+    return () => clearTimeout(timeout);
+  }, [state, navigate]);
 
   const deleteUser = useUsersStore((state) => state.deleteUser);
 
@@ -35,7 +53,6 @@ const UsersList = () => {
       deleteUser(userToDelete.id);
       setUserToDelete(null);
       setShowDeleteModal(false);
-      // toast("User is deleted successfully");
       toast.success("User is deleted successfully", {
         position: "bottom-right",
         autoClose: 2000,
@@ -48,6 +65,9 @@ const UsersList = () => {
         transition: Slide,
       });
     }
+  };
+  const handleEditClick = (user: User) => {
+    navigate(`/edit/${user.id}`);
   };
   return (
     <Container className="py-4">
@@ -76,15 +96,21 @@ const UsersList = () => {
           {users.map((user) => {
             return (
               <Col key={user.id} xs={12} sm={6} lg={4}>
-                <Card className="bg-body-secondary">
+                <Card
+                  className={`shadow-hover bg-body-secondary ${
+                    highlightedId === user.id ? "highlight-shadow" : ""
+                  }`}
+                >
                   <Card.Body>
                     <div className="d-flex justify-content-between align-items-start mb-3">
                       <h6 className="text-primary mb-1 text-truncate">
                         {user.name}
                       </h6>
                       <div className="d-flex gap-2">
-                        <Button variant="outline-primary" size="sm"
-                        onClick={() => navigate(`/edit/${user.id}`)}
+                        <Button
+                          variant="outline-primary"
+                          size="sm"
+                          onClick={() => handleEditClick(user)}
                         >
                           <Edit2 size={14} />
                         </Button>
