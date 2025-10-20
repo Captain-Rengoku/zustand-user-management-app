@@ -1,5 +1,5 @@
+import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { z } from "zod";
@@ -13,7 +13,7 @@ const userSchema = z.object({
     .string()
     .regex(
       /^(\d{10}|\(\d{3}\) \d{3}-\d{4})$/,
-      "phone number must be eighter 10 digits or format (555) 123-4567"
+      "Phone number must be either 10 digits or format (555) 123-4567"
     ),
   city: z.string().min(2, "City must be at least 2 characters"),
   state: z.string().min(2, "State must be at least 2 characters"),
@@ -86,7 +86,7 @@ const UserForm: React.FC<UserFormProps> = ({ isEdit = false }) => {
         progress: undefined,
         theme: "colored",
         transition: Slide,
-      })
+      });
     } else {
       if (id) {
         updateUser(id, user);
@@ -113,137 +113,152 @@ const UserForm: React.FC<UserFormProps> = ({ isEdit = false }) => {
   // console.log("errors", errors);
 
   return (
-    <Container className="py-4">
-      <Row className="justify-content-center">
-        <Col lg={8}>
-          <Card className="shadow">
-            <Card.Header className="bg-primary text-white">
-              <h3 className="mb-0">{isEdit ? "Update User" : "Add New User"}</h3>
-            </Card.Header>
-            <Card.Body className="bg-body-secondary">
-              <Form onSubmit={handleSubmit(onSubmit)}>
-                <Row>
-                  <Col md={6}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Name</Form.Label>
-                      <Form.Control
-                        type="text"
-                        isInvalid={!!errors.name}
-                        placeholder="Enter user name"
-                        {...register("name")}
-                      />
-                      {errors.name && (
-                        <div className="error-text">{errors.name.message}</div>
-                      )}
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Email</Form.Label>
-                      <Form.Control
-                        type="email"
-                        isInvalid={!!errors.email}
-                        placeholder="Enter email address"
-                        {...register("email")}
-                      />
-                      {errors.email && (
-                        <div className="error-text">{errors.email.message}</div>
-                      )}
-                    </Form.Group>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={6}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Phone</Form.Label>
-                      <Form.Control
-                        type="tel"
-                        isInvalid={!!errors.phone}
-                        placeholder="Enter phone number"
-                        {...register("phone")}
-                      />
-                      {errors.phone && (
-                        <div className="error-text">{errors.phone.message}</div>
-                      )}
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>City</Form.Label>
-                      <Form.Control
-                        type="text"
-                        isInvalid={!!errors.city}
-                        placeholder="Enter city"
-                        {...register("city")}
-                      />
-                      {errors.city && (
-                        <div className="error-text">{errors.city.message}</div>
-                      )}
-                    </Form.Group>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={4}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>State</Form.Label>
-                      <Form.Control
-                        type="text"
-                        isInvalid={!!errors.state}
-                        placeholder="Enter state"
-                        {...register("state")}
-                      />
-                      {errors.state && (
-                        <div className="error-text">{errors.state.message}</div>
-                      )}
-                    </Form.Group>
-                  </Col>
-                  <Col md={4}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Street Number</Form.Label>
-                      <Form.Control
-                        type="number"
-                        isInvalid={!!errors.streetNumber}
-                        placeholder="Enter street number"
-                        {...register("streetNumber")}
-                      />
-                      {errors.streetNumber && (
-                        <div className="error-text">
-                          {errors.streetNumber.message}
-                        </div>
-                      )}
-                    </Form.Group>
-                  </Col>
-                  <Col md={4}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Street Name</Form.Label>
-                      <Form.Control
-                        type="text"
-                        isInvalid={!!errors.streetName}
-                        placeholder="Enter street name"
-                        {...register("streetName")}
-                      />
-                      {errors.streetName && (
-                        <div className="error-text">
-                          {errors.streetName.message}
-                        </div>
-                      )}
-                    </Form.Group>
-                  </Col>
-                </Row>
-                <div className="d-flex gap-2 justify-content-end">
-                  <Button variant="secondary" onClick={() => navigate("/")}>
-                    Cancel
-                  </Button>
-                  <Button variant="primary" type="submit">
-                    {isEdit ? "Update User" : "Add User"}
-                  </Button>
-                </div>
-              </Form>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950 py-10 px-6 flex items-center justify-center">
+      <div className="w-full max-w-3xl bg-slate-800 rounded-2xl shadow-xl overflow-hidden text-white">
+        <div className="bg-sky-600 text-white py-4 px-6">
+          <h3 className="text-2xl font-semibold">
+            {isEdit ? "Update User" : "Add New User"}
+          </h3>
+        </div>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="p-8 space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-yellow-200 mb-1">Name</label>
+              <input
+                type="text"
+                placeholder="Enter user name"
+                {...register("name")}
+                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                  errors.name ? "border-red-500 focus:ring-red-400" : " border-sky-500 focus:ring-sky-400"
+                }`}
+              />
+              {errors.name && (
+                <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-yellow-200 mb-1">Email</label>
+              <input
+                type="email"
+                placeholder="Enter email address"
+                {...register("email")}
+                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                  errors.email ? "border-red-500 focus:ring-red-400" : "border-sky-500 focus:ring-sky-400"
+                }`}
+              />
+              {errors.email && (
+                <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>
+              )}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-yellow-200 mb-1">Phone</label>
+              <input
+                type="tel"
+                placeholder="Enter phone number"
+                {...register("phone")}
+                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                  errors.phone ? "border-red-500 focus:ring-red-400" : "border-sky-500 focus:ring-sky-400"
+                }`}
+              />
+              {errors.phone && (
+                <p className="text-sm text-red-500 mt-1">{errors.phone.message}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-yellow-200 mb-1">City</label>
+              <input
+                type="text"
+                placeholder="Enter city"
+                {...register("city")}
+                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                  errors.city ? "border-red-500 focus:ring-red-400" : "border-sky-500 focus:ring-sky-400"
+                }`}
+              />
+              {errors.city && (
+                <p className="text-sm text-red-500 mt-1">{errors.city.message}</p>
+              )}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-yellow-200 mb-1">State</label>
+              <input
+                type="text"
+                placeholder="Enter state"
+                {...register("state")}
+                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                  errors.state ? "border-red-500 focus:ring-red-400" : "border-sky-500 focus:ring-sky-400"
+                }`}
+              />
+              {errors.state && (
+                <p className="text-sm text-red-500 mt-1">{errors.state.message}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-yellow-200 mb-1">Street Number</label>
+              <input
+                type="number"
+                placeholder="Enter street number"
+                {...register("streetNumber")}
+                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                  errors.streetNumber
+                    ? "border-red-500 focus:ring-red-400"
+                    : "border-sky-500 focus:ring-sky-400"
+                }`}
+              />
+              {errors.streetNumber && (
+                <p className="text-sm text-red-500 mt-1">
+                  {errors.streetNumber.message}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-yellow-200 mb-1">Street Name</label>
+              <input
+                type="text"
+                placeholder="Enter street name"
+                {...register("streetName")}
+                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                  errors.streetName
+                    ? "border-red-500 focus:ring-red-400"
+                    : "border-sky-500 focus:ring-sky-400"
+                }`}
+              />
+              {errors.streetName && (
+                <p className="text-sm text-red-500 mt-1">
+                  {errors.streetName.message}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="flex justify-end gap-3 pt-4 font-bold">
+            <button
+              type="button"
+              onClick={() => navigate("/")}
+              className="px-5 py-2.5 rounded-lg bg-gray-600  hover:bg-gray-700 transition-all cursor-pointer"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-5 py-2.5 rounded-lg bg-sky-600 hover:bg-sky-700 transition-all cursor-pointer"
+            >
+              {isEdit ? "Update User" : "Add User"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };
 

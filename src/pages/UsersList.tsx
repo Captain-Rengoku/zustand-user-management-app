@@ -6,7 +6,6 @@ import {
   Plus,
   Trash2,
 } from "lucide-react";
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import useUsersStore from "../store/usersStore";
 import { useLocation, useNavigate } from "react-router-dom";
 import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
@@ -69,105 +68,103 @@ const UsersList = () => {
   const handleEditClick = (user: User) => {
     navigate(`/edit/${user.id}`);
   };
+
   return (
-    <Container className="py-4">
-      <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-        <h2 className="text-primary mb-0">User Management</h2>
-        <Button
-          className="d-flex p-2 align-items-center gap-1"
-          size="sm"
-          onClick={() => navigate("/add")}
-        >
-          <Plus size={18} />
-          <span className="d-none d-sm-inline">Add New User</span>
-          <span className="d-sm-none">Add</span>
-        </Button>
-      </div>
-      {users.length === 0 ? (
-        <div className="text-center py-5">
-          <h5 className="text-body-secondary">No users found</h5>
-          <p className="text-body-secondary">
-            Click "Add New User" button to get started
-          </p>
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950 py-10 px-4">
+      <section className="min-h-[94svh] bg-slate-900 backdrop-blur-md border border-slate-700 rounded-2xl shadow-2xl p-6 max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="flex flex-wrap justify-between items-center mb-6 gap-3">
+          <h2 className="text-sky-400 text-2xl bg-slate-800 py-2 px-4 rounded-lg font-bold shadow-yellow-400 shadow">User Management App</h2>
+          <button
+            onClick={() => navigate("/add")}
+            className="flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 font-bold cursor-pointer px-4 py-2 rounded-lg shadow-md transition"
+          >
+            <Plus size={18} />
+            <span className="font-medium hidden sm:inline">Add New User</span>
+            <span className="sm:hidden">Add</span>
+          </button>
         </div>
-      ) : (
-        // <pre>{JSON.stringify(users,null,2)}</pre>
-        <Row className="g-4 py-4">
-          {users.map((user) => {
-            return (
-              <Col key={user.id} xs={12} sm={6} lg={4}>
-                <Card
-                  className={`shadow-hover bg-body-secondary ${
-                    highlightedId === user.id ? "highlight-shadow" : ""
-                  }`}
-                >
-                  <Card.Body>
-                    <div className="d-flex justify-content-between align-items-start mb-3">
-                      <h6 className="text-primary mb-1 text-truncate">
-                        {user.name}
-                      </h6>
-                      <div className="d-flex gap-2">
-                        <Button
-                          variant="outline-primary"
-                          size="sm"
-                          onClick={() => handleEditClick(user)}
-                        >
-                          <Edit2 size={14} />
-                        </Button>
-                        <Button
-                          variant="outline-danger"
-                          size="sm"
-                          onClick={() => handleDeleteClick(user)}
-                        >
-                          <Trash2 size={14} />
-                        </Button>
-                      </div>
-                    </div>
-                    <div className="mb-3">
-                      <div className="d-flex align-items-center gap-2 mb-2">
-                        <MailIcon
-                          size={16}
-                          className="text-body-secondary flex-shrink-0"
-                        />
-                        <small className="text-break">{user.email}</small>
-                      </div>
-                      <div className="d-flex align-items-center gap-2 mb-2">
-                        <PhoneIcon
-                          size={16}
-                          className="text-body-secondary flex-shrink-0"
-                        />
-                        <small className="text-break">{user.phone}</small>
-                      </div>
-                    </div>
-                    <div className="d-flex align-items-start gap-2 mb-2">
-                      <MapPinIcon
-                        size={16}
-                        className="text-body-secondary mt-1 flex-shrink-0"
-                      />
-                      <div className="flex-grow-1">
-                        <div className="small">
-                          {user.location.street.number}{" "}
-                          {user.location.street.name}
-                        </div>
-                        <div className="text-body-secondary">
-                          {user.location.city}, {user.location.state}
-                        </div>
-                      </div>
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Col>
-            );
-          })}
-        </Row>
-      )}
-      <DeleteConfirmationModal
-        show={showDeleteModal}
-        userName={userToDelete?.name || ""}
-        onConfirm={handleDeleteConfirm}
-        onHide={handleDeleteCancel}
-      />
-    </Container>
+
+        {/* Empty State */}
+        {users.length === 0 ? (
+          <div className="min-h-[80svh] flex flex-col justify-center items-center py-10 text-slate-400">
+            <h5 className="text-lg mb-2">No users found</h5>
+            <p>
+              Click{" "}
+              <span className="text-sky-400 font-semibold">
+                “Add New User”
+              </span>{" "}
+              to get started.
+            </p>
+          </div>
+        ) : (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 py-4">
+            {users.map((user) => (
+              <div
+                key={user.id}
+                className={`bg-slate-700/50 rounded-xl p-5 shadow-md hover:shadow-lg transition-all border border-slate-600 ${
+                  highlightedId === user.id ? "ring-2 ring-sky-400" : ""
+                }`}
+              >
+                {/* Header */}
+                <div className="flex justify-between items-start mb-8">
+                  <h3 className="text-yellow-400 font-semibold truncate">
+                    {user.name}
+                  </h3>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleEditClick(user)}
+                      className="p-2 rounded-lg border-3 border-slate-500 cursor-pointer text-slate-400 hover:bg-sky-500/40 hover:text-sky-400 transition"
+                    >
+                      <Edit2 size={16} />
+                    </button>
+                    <button
+                      onClick={() => handleDeleteClick(user)}
+                      className="p-2 rounded-lg border-3 border-slate-500 cursor-pointer text-slate-400 hover:bg-red-500/40 hover:text-red-400 transition"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Contact Info */}
+                <div className="text-sm text-slate-300 space-y-2 mb-3">
+                  <div className="flex items-center gap-2">
+                    <MailIcon size={16} className="text-sky-400" />
+                    <span>{user.email}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <PhoneIcon size={16} className="text-sky-400" />
+                    <span>{user.phone}</span>
+                  </div>
+                </div>
+
+                {/* Location */}
+                <div className="flex items-start gap-2 text-slate-400 text-sm">
+                  <MapPinIcon size={16} className="text-sky-400 mt-0.5" />
+                  <div>
+                    <p>
+                      {user.location.street.number} {user.location.street.name}
+                    </p>
+                    <p className="text-slate-500">
+                      {user.location.city}, {user.location.state}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Delete Confirmation Modal */}
+        <DeleteConfirmationModal
+          show={showDeleteModal}
+          userName={userToDelete?.name || ""}
+          onConfirm={handleDeleteConfirm}
+          onHide={handleDeleteCancel}
+        />
+      </section>
+    </div>
   );
 };
 
